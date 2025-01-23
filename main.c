@@ -19,6 +19,12 @@ player initialiseCharacter() {
 }
 
 int startGame() {
+    printf("You wake up in a damp cave\n");
+    printf("A dim light is glowing in the distance\n");
+    printf("You can't make out your surroundings so you walk towards the light\n");
+    printf("A terrible stench attacks your senses as you walk towards entrance\n");
+    printf("It is almost unbearable\n");
+    printf("As you approach the light you notice a bruises on your arms\n");
     return 0;
 }
 

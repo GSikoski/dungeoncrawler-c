@@ -1,0 +1,25 @@
+60
+You wake up in a damp cave...\n
+A dim light is glowing in the distance
+You can't make out your surroundings so you walk towards the light
+A terrible stench attacks your senses as you walk towards the entrance
+It is almost unbearable\n
+As you approach the light you notice bruises on your arms\n
+It has been a painful trip, but you remain determined to keep moving forward\n
+As you near the dimly lit room you take a moment to survey the surroundings before stepping out of the shadows\n\n
+80
+The room is empty,
+But an unmistakable odour makes it clear you are still not safe
+60
+You take a moment to see what is left of the equipment you came with
+300
+\n
+60
+All that's left is a small ornate knife that you had tucked in your pants
+It looks like the wretches took everything else that you had
+You sigh a breath of relief
+300
+\n
+60
+The knife brings back memories of not too long ago
+$CHK KNIFE

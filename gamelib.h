@@ -20,6 +20,7 @@ void scrollPrint(char text[], int rate) {
     printf("%c", '\n');
 }
 
+// Dumps the player details into a text file in the saves folder
 void saveGame(player c){
     FILE* fptr;
     char filepath[30] = "./saves/"; 
@@ -37,4 +38,41 @@ void saveGame(player c){
     fprintf(fptr,"%i", c.health);
 
     fclose(fptr);
+}
+
+
+player loadGame(char filepath[]){
+    FILE* fptr;
+    fptr = fopen(filepath, "r");
+    
+    if (fptr == NULL) {
+        player error = {-1, "Error"};
+        perror("Error opening file");
+        return error;
+    }
+
+    player* c_ptr = malloc(sizeof(player));
+
+    fgets(c_ptr->name, 20, fptr);
+    char hstring[3];
+    fgets(hstring, 3, fptr);
+    c_ptr->health = atoi(hstring);
+
+    player c = *c_ptr;
+    free(c_ptr);
+
+    fclose(fptr);
+
+    return c;
+}
+
+int exists(const char *fname)
+{
+    FILE *file;
+    if ((file = fopen(fname, "r")))
+    {
+        fclose(file);
+        return 1;
+    }
+    return 0;
 }

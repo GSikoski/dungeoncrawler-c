@@ -5,6 +5,7 @@
 typedef struct player {
     int health;
     char name[20];
+    char checkpoint[6];
 }player;
 
 
@@ -36,6 +37,9 @@ void saveGame(player c){
     fprintf(fptr, "%s", c.name);
     fprintf(fptr, "%c", '\n');
     fprintf(fptr,"%i", c.health);
+    fprintf(fptr, "%c", '\n');
+    fprintf(fptr, "%s", c.checkpoint);
+    
 
     fclose(fptr);
 }
@@ -57,6 +61,7 @@ player loadGame(char filepath[]){
     char hstring[3];
     fgets(hstring, 3, fptr);
     c_ptr->health = atoi(hstring);
+    fgets(c_ptr->checkpoint, 6, fptr);
 
     player c = *c_ptr;
     free(c_ptr);

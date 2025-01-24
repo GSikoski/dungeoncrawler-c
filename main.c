@@ -35,6 +35,7 @@ player initialiseCharacter() {
     player* c_ptr = malloc(sizeof(player));
     strcpy(c_ptr->name, playerName);
     c_ptr->health = 100;
+    strcpy(c_ptr->checkpoint, "BEGIN");
     
     player c = *c_ptr;
 
@@ -50,7 +51,7 @@ player initialiseCharacter() {
     return c;
 }
 
-int runGame() {
+int runGame(player c) {
     scrollPrint("You wake up in a damp cave...\n", 60);
     scrollPrint("A dim light is glowing in the distance", 60);
     scrollPrint("You can't make out your surroundings so you walk towards the light", 60);
@@ -69,12 +70,16 @@ int runGame() {
     scrollPrint("\n", 300);
     scrollPrint("The knife brings back memories not too long ago", 60);
     
+    strcpy(c.checkpoint, "KNIFE");
+    saveGame(c);
+
+
     return 0;
 }
 
 
 int main() {
     player c = initialiseCharacter();
-    return runGame();
+    return runGame(c);
 }
 

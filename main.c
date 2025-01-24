@@ -16,6 +16,8 @@ player initialiseCharacter() {
     player c = *c_ptr;
     free(c_ptr);
 
+    saveGame(c);
+
     return c;
 }
 

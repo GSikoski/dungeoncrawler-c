@@ -19,3 +19,22 @@ void scrollPrint(char text[], int rate) {
     }
     printf("%c", '\n');
 }
+
+void saveGame(player c){
+    FILE* fptr;
+    char filepath[30] = "./saves/"; 
+    strcat(filepath, c.name);
+    strcat(filepath, ".txt");
+    
+    fptr = fopen(filepath, "w");
+    if (fptr == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    fprintf(fptr, "%s", c.name);
+    fprintf(fptr, "%c", '\n');
+    fprintf(fptr,"%i", c.health);
+
+    fclose(fptr);
+}

@@ -50,7 +50,7 @@ player loadGame(char filepath[]){
     fptr = fopen(filepath, "r");
     
     if (fptr == NULL) {
-        player error = {-1, "Error"};
+        player error = {-1, "Error", ""};
         perror("Error opening file");
         return error;
     }

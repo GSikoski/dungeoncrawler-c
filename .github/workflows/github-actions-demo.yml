@@ -18,5 +18,10 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Check build
         run: |
-          gcc ${{ github.workspace }}/main.c
+          gcc -Wall -Wextra -Werror -o output *.c 2> gcc_warnings.log || true
+          if [ -s gcc_warnings.log ]; then
+            echo "##[error] Compilation warnings detected:"
+            cat gcc_warnings.log
+            exit 1
+          fi
       - run: echo "🍏 This job's status is ${{ job.status }}."

@@ -34,7 +34,7 @@ int main() {
     player c = initialiseCharacter();
     char welomeStr[40] = "Hello ";
     strcat(welomeStr, c.name);
-    strcat(welomeStr, '\n');
+    strcat(welomeStr, "\n");
     scrollPrint(welomeStr, 60);
     return startGame();
 }

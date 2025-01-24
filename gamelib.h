@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h>
 
 typedef struct player {
     int health;
@@ -70,6 +71,64 @@ player loadGame(char filepath[]){
 
     return c;
 }
+
+int isInteger(const char *str) {
+    if (str == NULL || *str == '\0' || isspace(*str)) {
+        return 0; 
+    }
+    char *endptr;
+    strtol(str, &endptr, 10);
+
+    while (*endptr != '\0' && isspace((unsigned char)*endptr)) {
+        endptr++;  
+    }
+    return *endptr == '\0';  
+}
+
+int isCheckpoint(const char *str) {
+    return strncmp(str, "$CHK ", strlen("$CHK ")) == 0;
+}
+
+int parseScript(player c) {
+    
+    char filepath[30] = "./scripts/"; 
+    strcat(filepath, c.checkpoint);
+    strcat(filepath, ".txt");
+    
+    FILE* fptr;
+    fptr = fopen(filepath, "r");
+    
+    if (fptr == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    char line[200];
+    int scrollSpeed = 100;
+
+    while (fgets(line, sizeof(line), fptr) != NULL) {
+        line[strcspn(line, "\n")] = '\0';
+        
+        if (isInteger(line)){
+            scrollSpeed = atol(line);
+        }
+        else if (isCheckpoint(line))
+        {
+            char* name = line + 5;
+            strcpy(c.checkpoint, name);
+            saveGame(c);
+            return 0;
+        }
+        else {
+            scrollPrint(line, scrollSpeed);
+        }
+        
+    }
+    return 1;
+
+}
+
+
 
 int exists(const char *fname)
 {

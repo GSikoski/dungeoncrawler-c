@@ -124,14 +124,16 @@ parsout parseScript(player c) {
             char* name = line + 5;
             strcpy(c.checkpoint, name);
             saveGame(c);
-            return 0;
+            parsout pout = {c, 0};
+            return pout;
         }
         else {
             scrollPrint(line, scrollSpeed);
         }
         
     }
-    return 1;
+    parsout pout = {c, 2};
+    return pout;
 
 }
 

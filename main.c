@@ -32,7 +32,10 @@ int startGame() {
 
 int main() {
     player c = initialiseCharacter();
-    printf("Hello %s\n", c.name);
+    char welomeStr[40] = "Hello ";
+    strcat(welomeStr, c.name);
+    strcat(welomeStr, "\n");
+    scrollPrint(welomeStr, 60);
     return startGame();
 }
 

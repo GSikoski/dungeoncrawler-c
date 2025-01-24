@@ -15,6 +15,11 @@ typedef struct player {
 void scrollPrint(char text[], int rate) {
     int textLength = strlen(text);
     for (int i = 0; i < textLength; i++){
+        if (text[i] == '\\' && text[i+1] == 'n') {
+            printf("%c", '\n');
+            i++;
+            continue;
+        }
         printf("%c", text[i]);
         fflush(stdout);
         usleep(rate * 1000);

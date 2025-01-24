@@ -52,7 +52,10 @@ player initialiseCharacter() {
 }
 
 int runGame(player c) {
-    parseScript(c);
+    int errorval = 0;
+    while (errorval == 0){
+        errorval = parseScript(c);
+    }
     return 0;
 }
 

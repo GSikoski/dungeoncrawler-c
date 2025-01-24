@@ -89,7 +89,13 @@ int isCheckpoint(const char *str) {
     return strncmp(str, "$CHK ", strlen("$CHK ")) == 0;
 }
 
-int parseScript(player c) {
+typedef struct parsout {
+    player c;
+    int error;
+}parsout;
+
+
+parsout parseScript(player c) {
     
     char filepath[30] = "./scripts/"; 
     strcat(filepath, c.checkpoint);
@@ -100,7 +106,8 @@ int parseScript(player c) {
     
     if (fptr == NULL) {
         perror("Error opening file");
-        return 1;
+        parsout pout = {c, 1};
+        return pout;
     }
 
     char line[200];

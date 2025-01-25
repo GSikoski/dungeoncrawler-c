@@ -1,6 +1,11 @@
 60
 Thinking back to the last time you saw Linda.
 You were having a heated argument when you:\n
+$CHOICE 
 1) Left slamming the door behind you.
+$GOTO SLAM
 2) Broke down in tears crying.
+$GOTO CRY
 3) Disarmed the situation.
+$GOTO DISAR
+$ENDCHOICE

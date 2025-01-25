@@ -94,10 +94,18 @@ int isCheckpoint(const char *str) {
     return strncmp(str, "$CHK ", strlen("$CHK ")) == 0;
 }
 
+int isChoice(const char *str) {
+    return strncmp(str, "$CHOICE ", strlen("$CHOICE ")) == 0;
+}
+
 typedef struct parsout {
     player c;
     int error;
 }parsout;
+
+player parseChoice(player c){
+    // Or get choices here
+}
 
 
 parsout parseScript(player c) {
@@ -129,6 +137,13 @@ parsout parseScript(player c) {
             char* name = line + 5;
             strcpy(c.checkpoint, name);
             saveGame(c);
+            parsout pout = {c, 0};
+            return pout;
+        }
+        else if (isChoice(line))
+        {
+            // Either get choices here
+            c = parseChoice(c);
             parsout pout = {c, 0};
             return pout;
         }

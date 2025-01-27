@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#define Green  "\x1B[32m"
+#define White "\x1B[0m"
+
+
 typedef struct player {
     int health;
     char name[20];
@@ -46,7 +50,6 @@ void saveGame(player c){
     fprintf(fptr, "%c", '\n');
     fprintf(fptr, "%s", c.checkpoint);
     
-
     fclose(fptr);
 }
 
@@ -64,6 +67,7 @@ player loadGame(char filepath[]){
     player* c_ptr = malloc(sizeof(player));
 
     fgets(c_ptr->name, 20, fptr);
+    c_ptr->name[strcspn(c_ptr->name, "\n")] = '\0';
     char hstring[10];
     fgets(hstring, 10, fptr);
     c_ptr->health = atoi(hstring);
@@ -113,11 +117,20 @@ typedef struct choicein {
 
 player parseChoice(player c, choicein choices[], int noChoices){
     for (int i = 0; i < noChoices; i++){
-        printf("%s", choices[i].message);
-        printf("%s", "\n");
-        printf("%s", choices[i].location);
-        printf("%s", "\n");
+        char choicestr[200];
+        sprintf(choicestr, "%d) ", i+1);
+        strcat(choicestr, choices[i].message);
+        scrollPrint(choicestr, 60);
     }
+    
+    int choice;
+    // TODO: This needs to be validated as a number > 0 and < noChoices
+    printf(Green);
+    scanf("%d", &choice);
+    printf(White);
+
+    strcpy(c.checkpoint, choices[choice-1].location);
+    saveGame(c);
     return c;
 }
 
@@ -181,7 +194,7 @@ parsout parseScript(player c) {
             
             c = parseChoice(c, choices, noChoices);
             fclose(fptr);
-            parsout pout = {c, 1};
+            parsout pout = {c, 0};
             return pout;
         }
         else {

@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#define Green  "\x1B[32m"
+#define White "\x1B[0m"
+
+
 typedef struct player {
     int health;
     char name[20];
@@ -46,7 +50,6 @@ void saveGame(player c){
     fprintf(fptr, "%c", '\n');
     fprintf(fptr, "%s", c.checkpoint);
     
-
     fclose(fptr);
 }
 
@@ -64,8 +67,9 @@ player loadGame(char filepath[]){
     player* c_ptr = malloc(sizeof(player));
 
     fgets(c_ptr->name, 20, fptr);
-    char hstring[3];
-    fgets(hstring, 3, fptr);
+    c_ptr->name[strcspn(c_ptr->name, "\n")] = '\0';
+    char hstring[10];
+    fgets(hstring, 10, fptr);
     c_ptr->health = atoi(hstring);
     fgets(c_ptr->checkpoint, 6, fptr);
 
@@ -94,10 +98,47 @@ int isCheckpoint(const char *str) {
     return strncmp(str, "$CHK ", strlen("$CHK ")) == 0;
 }
 
+int isChoice(const char *str) {
+    return strncmp(str, "$CHOICE ", strlen("$CHOICE ")) == 0;
+}
+
 typedef struct parsout {
     player c;
     int error;
 }parsout;
+
+
+
+typedef struct choicein {
+    char message[40];
+    char location[5];
+}choicein;
+
+
+player parseChoice(player c, choicein choices[], int noChoices){
+    for (int i = 0; i < noChoices; i++){
+        char choicestr[200];
+        sprintf(choicestr, "%d) ", i+1);
+        strcat(choicestr, choices[i].message);
+        scrollPrint(choicestr, 60);
+    }
+    
+    int choice = -1;
+    while(choice == -1){
+        printf(Green);
+        scanf("%d", &choice);
+        printf(White);
+        if (choice <= 0 || choice > noChoices) {
+            scrollPrint("Invalid input, please enter a valid number", 20);
+            while (getchar() != '\n'); // flush the input buffer
+            choice = -1;
+        }
+    }
+
+    strcpy(c.checkpoint, choices[choice-1].location);
+    saveGame(c);
+    return c;
+}
 
 
 parsout parseScript(player c) {
@@ -130,6 +171,36 @@ parsout parseScript(player c) {
             strcpy(c.checkpoint, name);
             saveGame(c);
             parsout pout = {c, 0};
+            fclose(fptr);
+            return pout;
+        }
+        else if (isChoice(line))
+        {
+            int noChoices = line[8] - '0';
+            choicein choices[noChoices];
+            
+            int j = 0;
+
+            for (int i = 0; i < noChoices; i++){
+                
+                choicein choice;
+
+                fgets(line, sizeof(line), fptr);
+                line[strcspn(line, "\n")] = '\0';
+
+                strcpy(choice.message, line);
+
+                fgets(line, sizeof(line), fptr);
+                line[strcspn(line, "\n")] = '\0';
+                char* name = line + 6;
+                strcpy(choice.location, name);
+                choices[j] = choice;
+                j++;
+            }
+            
+            c = parseChoice(c, choices, noChoices);
+            fclose(fptr);
+            parsout pout = {c, 0};
             return pout;
         }
         else {
@@ -138,6 +209,7 @@ parsout parseScript(player c) {
         
     }
     parsout pout = {c, 2};
+    fclose(fptr);
     return pout;
 
 }

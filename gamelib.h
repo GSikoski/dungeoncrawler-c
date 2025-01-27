@@ -64,8 +64,8 @@ player loadGame(char filepath[]){
     player* c_ptr = malloc(sizeof(player));
 
     fgets(c_ptr->name, 20, fptr);
-    char hstring[3];
-    fgets(hstring, 3, fptr);
+    char hstring[10];
+    fgets(hstring, 10, fptr);
     c_ptr->health = atoi(hstring);
     fgets(c_ptr->checkpoint, 6, fptr);
 
@@ -103,8 +103,22 @@ typedef struct parsout {
     int error;
 }parsout;
 
-player parseChoice(player c){
-    // Or get choices here
+
+
+typedef struct choicein {
+    char message[40];
+    char location[5];
+}choicein;
+
+
+player parseChoice(player c, choicein choices[], int noChoices){
+    for (int i = 0; i < noChoices; i++){
+        printf("%s", choices[i].message);
+        printf("%s", "\n");
+        printf("%s", choices[i].location);
+        printf("%s", "\n");
+    }
+    return c;
 }
 
 
@@ -138,13 +152,36 @@ parsout parseScript(player c) {
             strcpy(c.checkpoint, name);
             saveGame(c);
             parsout pout = {c, 0};
+            fclose(fptr);
             return pout;
         }
         else if (isChoice(line))
         {
-            // Either get choices here
-            c = parseChoice(c);
-            parsout pout = {c, 0};
+            int noChoices = line[8] - '0';
+            choicein choices[noChoices];
+            
+            int j = 0;
+
+            for (int i = 0; i < noChoices; i++){
+                
+                choicein choice;
+
+                fgets(line, sizeof(line), fptr);
+                line[strcspn(line, "\n")] = '\0';
+
+                strcpy(choice.message, line);
+
+                fgets(line, sizeof(line), fptr);
+                line[strcspn(line, "\n")] = '\0';
+                char* name = line + 6;
+                strcpy(choice.location, name);
+                choices[j] = choice;
+                j++;
+            }
+            
+            c = parseChoice(c, choices, noChoices);
+            fclose(fptr);
+            parsout pout = {c, 1};
             return pout;
         }
         else {
@@ -153,6 +190,7 @@ parsout parseScript(player c) {
         
     }
     parsout pout = {c, 2};
+    fclose(fptr);
     return pout;
 
 }

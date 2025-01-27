@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "gamelib.h"
-
-#define Green  "\x1B[32m"
-#define White "\x1B[0m"
 
 player initialiseCharacter() {
     

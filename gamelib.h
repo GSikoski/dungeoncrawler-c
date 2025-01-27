@@ -123,11 +123,17 @@ player parseChoice(player c, choicein choices[], int noChoices){
         scrollPrint(choicestr, 60);
     }
     
-    int choice;
-    // TODO: This needs to be validated as a number > 0 and < noChoices
-    printf(Green);
-    scanf("%d", &choice);
-    printf(White);
+    int choice = -1;
+    while(choice == -1){
+        printf(Green);
+        scanf("%d", &choice);
+        printf(White);
+        if (choice <= 0 || choice > noChoices) {
+            scrollPrint("Invalid input, please enter a valid number", 20);
+            while (getchar() != '\n'); // flush the input buffer
+            choice = -1;
+        }
+    }
 
     strcpy(c.checkpoint, choices[choice-1].location);
     saveGame(c);

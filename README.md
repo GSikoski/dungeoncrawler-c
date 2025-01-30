@@ -1,4 +1,4 @@
-# Dungeon Crawler C
+# Dungeon Crawler C (On hold)
 
 ## What is it?
 A small project that I've used to learn some basic C.

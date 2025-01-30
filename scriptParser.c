@@ -127,9 +127,7 @@ player parseChoice(player c, choicein choices[], int noChoices){
     
     int choice = -1;
     while(choice == -1){
-        printf(Green);
-        scanf("%d", &choice);
-        printf(White);
+        gscanfi(&choice);
         if (choice <= 0 || choice > noChoices) {
             scrollPrint("Invalid input, please enter a valid number", 20);
             while (getchar() != '\n'); // flush the input buffer

@@ -6,9 +6,7 @@ player initialiseCharacter() {
 
     scrollPrint("Hello player, welcome to the dungeon!\n", 60);
     scrollPrint("What is your name?\n", 60);
-    printf(Green);
-    scanf("%s", playerName);
-    printf(White);
+    gscanfs(playerName);
     printf("%c", '\n');
     
     char filepath[30] = "./saves/"; 

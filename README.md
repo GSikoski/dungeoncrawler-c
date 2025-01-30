@@ -21,7 +21,7 @@ The checkpoint tag. Leave it at the end of the script file with the directions t
 
 Will end the current script file and load the script contained in `/scripts/GORP.txt`
 
-### $CHOICE & $ GOTO
+### $CHOICE & $GOTO
 The choice tag. Another tag for the end of the script file. The structure for 2 choices follows:
 
 ```
